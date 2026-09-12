@@ -1,13 +1,19 @@
 body {
-    background-color: #ffffff;
-    color: #000000;
-    transition: background-color 0.3s, color 0.3s; /* Плавний перехід */
+    background-color: white; 
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Стилі, які застосовуються при додаванні класу dark-theme */
 body.dark-theme {
-    background-color: #121212; /* Чорний/темний фон */
-    color: #ffffff;            /* Білий текст */
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-theme .a {
+    color: #ff79c6; 
+}
+
+body.dark-theme .game1 a {
+    color: #ff79c6;
 }
 
 header a{
