@@ -1,5 +1,20 @@
-body{
-    text-align: center;
+body {
+    text-align:center;
+    background-color: white; 
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-theme .a {
+    color: #ff79c6; 
+}
+
+body.dark-theme .game1 a {
+    color: #ff79c6;
 }
 
 button{
