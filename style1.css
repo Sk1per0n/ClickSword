@@ -1,3 +1,15 @@
+body {
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s; /* Плавний перехід */
+}
+
+/* Стилі, які застосовуються при додаванні класу dark-theme */
+body.dark-theme {
+    background-color: #121212; /* Чорний/темний фон */
+    color: #ffffff;            /* Білий текст */
+}
+
 header a{
     position: fixed;
     font-size:50px;
