@@ -22,25 +22,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-const toggleButton = document.getElementById('theme-toggle');
-const body = document.body;
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('theme-toggle');
+    const body = document.body;
 
-// Перевіряємо, чи була збережена тема в пам'яті браузера при завантаженні
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-theme');
-    toggleButton.textContent = '☀️ Світла тема';
-}
-
-// Слухаємо клік по кнопці
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-theme');
-
-    // Змінюємо текст кнопки та зберігаємо вибір
-    if (body.classList.contains('dark-theme')) {
-        toggleButton.textContent = '☀️ Світла тема';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        toggleButton.textContent = '🌙 Темна тема';
-        localStorage.setItem('theme', 'light');
+    // 1. Проверяем сохраненную тему при загрузке страницы
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-theme');
+        if (toggleButton) {
+            toggleButton.textContent = '☀️ Світла тема';
+        }
     }
+
+    // 2. Если кнопки нет на этой конкретной странице — просто завершаем работу
+    if (!toggleButton) return;
+
+    // 3. Слушаем клик по кнопке (если она есть на странице)
+    toggleButton.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+
+        if (body.classList.contains('dark-theme')) {
+            toggleButton.textContent = '☀️ Світла тема';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            toggleButton.textContent = '🌙 Темна тема';
+            localStorage.setItem('theme', 'light');
+        }
+    });
 });
