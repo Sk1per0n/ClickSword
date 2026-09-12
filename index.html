@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script>
+        // Применяем класс сразу при загрузке DOM, чтобы избежать вспышки белого цвета
+        if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark-theme'); // Добавляем к <html> или <body>
+        }
+    </script>
     <meta charset="UTF-8">
     <title> Головна </title>
     <link rel="stylesheet" href="style.css">
