@@ -21,32 +21,3 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('userCounter', currentValue);
     });
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('theme-toggle');
-    const body = document.body;
-
-    // 1. Проверяем сохраненную тему при загрузке страницы
-    if (localStorage.getItem('theme') === 'dark') {
-        body.classList.add('dark-theme');
-        if (toggleButton) {
-            toggleButton.textContent = '☀️ Світла тема';
-        }
-    }
-
-    // 2. Если кнопки нет на этой конкретной странице — просто завершаем работу
-    if (!toggleButton) return;
-
-    // 3. Слушаем клик по кнопке (если она есть на странице)
-    toggleButton.addEventListener('click', () => {
-        body.classList.toggle('dark-theme');
-
-        if (body.classList.contains('dark-theme')) {
-            toggleButton.textContent = '☀️ Світла тема';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            toggleButton.textContent = '🌙 Темна тема';
-            localStorage.setItem('theme', 'light');
-        }
-    });
-});
