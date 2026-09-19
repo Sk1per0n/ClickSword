@@ -16,13 +16,7 @@ body.dark-theme .game1 a {
     color: #ff79c6;
 }
 
-body.dark-theme main a {
-    color: white;
-}
 
-main a {
-    color: black; 
-}
 
 header a{
     position: fixed;
