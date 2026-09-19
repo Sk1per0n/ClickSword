@@ -17,6 +17,14 @@ body.dark-theme .game1 a {
     color: #ff79c6;
 }
 
+body.dark-theme main a {
+    color: white;
+}
+
+main a {
+    color: black; 
+}
+
 button{
     margin-top: 40px;
     background-image:url('https://thumb.ac-illust.com/40/404ed648666f2d7e48f18319226e07b1_t.jpeg') ;
