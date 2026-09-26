@@ -2,33 +2,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const button = document.getElementById('Button');
     const counterSpan = document.getElementById('counter');
 
-    // Читаємо кількість очок з localStorage
+    // 1. Читаємо збережене значення очок з localStorage. Якщо немає — 0.
     let currentValue = localStorage.getItem('userCounter') 
         ? parseInt(localStorage.getItem('userCounter')) 
         : 0;
-
-    // Читаємо силу кліку (за замовчуванням 1)
-    let clickPower = localStorage.getItem('clickPower') 
-        ? parseInt(localStorage.getItem('clickPower')) 
-        : 1;
     
-    // Виводимо поточні очки на екран
+    // Одразу виводимо очки на екран
     counterSpan.textContent = currentValue;
 
-    // Обробка кліку по головній кнопці
+    // 2. Обробка кліку по головній кнопці
     button.addEventListener('click', function() {
-        // Додаємо до поточного значення силу кліку (а не просто 1)
-        currentValue += clickPower;
+        // ЗАВЖДИ знову зчитуємо актуальну силу кліку з localStorage, 
+        // щоб гра знала, якщо ти щойно купив покращення в магазині!
+        let currentClickPower = localStorage.getItem('clickPower') 
+            ? parseInt(localStorage.getItem('clickPower')) 
+            : 1;
+
+        // Додаємо до очок силу кліку (а не просто 1)
+        currentValue += currentClickPower;
         
         // Змінюємо текст на сторінці
         counterSpan.textContent = currentValue;
         
-        // Зберігаємо оновлене число в пам'ять браузера
+        // Зберігаємо оновлене число очок в пам'ять браузера
         localStorage.setItem('userCounter', currentValue);
     });
 });
 
-// Логіка темної теми залишається без змін
+// Логіка темної теми
 const toggleButton = document.getElementById('theme-toggle');
 const body = document.body;
 
