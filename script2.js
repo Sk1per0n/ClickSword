@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const up1Button = document.getElementById('up1');
     const up2Button = document.getElementById('up2');
+    const up3Button = document.getElementById('up3');
+    const up4Button = document.getElementById('up4');
+    const up5Button = document.getElementById('up5');
+    const up6Button = document.getElementById('up6');
+    const up7Button = document.getElementById('up7');
+    const up8Button = document.getElementById('up7');
     const shopCounter = document.getElementById('shop-counter');
 
     
@@ -55,3 +61,111 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+ up3Button.addEventListener('click', function() {
+        const cost = 500;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 5;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
+
+ up4Button.addEventListener('click', function() {
+        const cost = 1500;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 10;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
+
+ up5Button.addEventListener('click', function() {
+        const cost = 2000;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 15;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
+
+ up6Button.addEventListener('click', function() {
+        const cost = 3000;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 20;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
+
+ up7Button.addEventListener('click', function() {
+        const cost = 50000;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 50;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
+
+ up8Button.addEventListener('click', function() {
+        const cost = 150000;
+        
+        if (currentValue >= cost) {
+            currentValue -= cost; 
+            clickPower += 100;
+         
+            localStorage.setItem('userCounter', currentValue);
+            localStorage.setItem('clickPower', clickPower);
+            
+            
+            shopCounter.textContent = currentValue;
+            alert('успішна покупка! Тепер клік дає більше.');
+        } else {
+            alert('Недостатньо очок!');
+        }
+    });
