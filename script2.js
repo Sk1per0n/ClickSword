@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const up2Button = document.getElementById('up2');
     const shopCounter = document.getElementById('shop-counter');
 
-    // Отримуємо поточні дані з localStorage
+    
     let currentValue = localStorage.getItem('userCounter') 
         ? parseInt(localStorage.getItem('userCounter')) 
         : 0;
@@ -12,22 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
         ? parseInt(localStorage.getItem('clickPower')) 
         : 1;
 
-    // Показуємо баланс
+  
     shopCounter.textContent = currentValue;
 
-    // Покупка першого покращення (+1 до кліку, ціна 10)
+    
     up1Button.addEventListener('click', function() {
-        const cost = 10;
+        const cost = 100;
         
         if (currentValue >= cost) {
             currentValue -= cost; // Віднімаємо ціну
             clickPower += 1;      // Збільшуємо силу кліку на 1
             
-            // Зберігаємо нові дані
+         
             localStorage.setItem('userCounter', currentValue);
             localStorage.setItem('clickPower', clickPower);
             
-            // Оновлюємо відображення очок
+            
             shopCounter.textContent = currentValue;
             alert('успішна покупка! Тепер клік дає більше.');
         } else {
@@ -35,19 +35,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Покупка другого покращення (+2 до кліку, ціна 25)
+    
     up2Button.addEventListener('click', function() {
-        const cost = 25;
+        const cost = 250;
         
         if (currentValue >= cost) {
             currentValue -= cost; // Віднімаємо ціну
             clickPower += 2;      // Збільшуємо силу кліку на 2
             
-            // Зберігаємо нові дані
+            
             localStorage.setItem('userCounter', currentValue);
             localStorage.setItem('clickPower', clickPower);
             
-            // Оновлюємо відображення очок
+         
             shopCounter.textContent = currentValue;
             alert('успішна покупка!');
         } else {
