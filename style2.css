@@ -13,8 +13,7 @@ header a{
 }
 
 h2{
-    display:flex;
-    justify-content:flex-end
+    text-align:end;
 }
 
 .upgrade1{
