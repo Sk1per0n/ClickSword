@@ -1,0 +1,27 @@
+header a{
+    position: fixed;
+    font-size:50px;
+    top: 20px;  
+    left: 20px; 
+    z-index: 1000;
+    text-decoration:none;
+    text-align: center;
+    color:black;
+    background-color:cyan;
+    border-radius: 50%;
+    width: 160px;
+}
+
+.upgrade1{
+    margin-top: 100px;
+    display: flex;
+}
+
+.up1{
+    margin-left: 20%;
+}
+
+.up2{
+    margin-left: 50%;
+    
+}
