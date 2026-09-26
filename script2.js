@@ -1,15 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const up1Button = document.getElementById('up1');
-    const up2Button = document.getElementById('up2');
-    const up3Button = document.getElementById('up3');
-    const up4Button = document.getElementById('up4');
-    const up5Button = document.getElementById('up5');
-    const up6Button = document.getElementById('up6');
-    const up7Button = document.getElementById('up7');
-    const up8Button = document.getElementById('up7');
+    // Збираємо всі кнопки в об'єкт або масив для зручності
     const shopCounter = document.getElementById('shop-counter');
 
-    
     let currentValue = localStorage.getItem('userCounter') 
         ? parseInt(localStorage.getItem('userCounter')) 
         : 0;
@@ -18,154 +10,36 @@ document.addEventListener('DOMContentLoaded', function() {
         ? parseInt(localStorage.getItem('clickPower')) 
         : 1;
 
-  
     shopCounter.textContent = currentValue;
 
-    
-    up1Button.addEventListener('click', function() {
-        const cost = 100;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; // Віднімаємо ціну
-            clickPower += 1;      // Збільшуємо силу кліку на 1
-            
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
+    // Універсальна функція для покупки апгрейдів
+    function setupUpgrade(buttonId, cost, powerIncrease) {
+        const button = document.getElementById(buttonId);
+        if (!button) return; // Якщо кнопка не знайдена, йдемо далі
 
-    
-    up2Button.addEventListener('click', function() {
-        const cost = 250;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; // Віднімаємо ціну
-            clickPower += 2;      // Збільшуємо силу кліку на 2
-            
-            
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-         
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка!');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
+        button.addEventListener('click', function() {
+            if (currentValue >= cost) {
+                currentValue -= cost; 
+                clickPower += powerIncrease;      
+                
+                localStorage.setItem('userCounter', currentValue);
+                localStorage.setItem('clickPower', clickPower);
+                
+                shopCounter.textContent = currentValue;
+                alert('Успішна покупка! Тепер клік дає більше.');
+            } else {
+                alert('Недостатньо очок!');
+            }
+        });
+    }
+
+    // Підключаємо кожну кнопку з її ціною та приростом сили кліку
+    setupUpgrade('up1', 100, 1);
+    setupUpgrade('up2', 250, 2);
+    setupUpgrade('up3', 500, 5);
+    setupUpgrade('up4', 1500, 10);
+    setupUpgrade('up5', 2000, 15);
+    setupUpgrade('up6', 3000, 20);
+    setupUpgrade('up7', 50000, 50);
+    setupUpgrade('up8', 150000, 100);
 });
-
- up3Button.addEventListener('click', function() {
-        const cost = 500;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 5;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
-
- up4Button.addEventListener('click', function() {
-        const cost = 1500;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 10;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
-
- up5Button.addEventListener('click', function() {
-        const cost = 2000;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 15;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
-
- up6Button.addEventListener('click', function() {
-        const cost = 3000;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 20;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
-
- up7Button.addEventListener('click', function() {
-        const cost = 50000;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 50;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
-
- up8Button.addEventListener('click', function() {
-        const cost = 150000;
-        
-        if (currentValue >= cost) {
-            currentValue -= cost; 
-            clickPower += 100;
-         
-            localStorage.setItem('userCounter', currentValue);
-            localStorage.setItem('clickPower', clickPower);
-            
-            
-            shopCounter.textContent = currentValue;
-            alert('успішна покупка! Тепер клік дає більше.');
-        } else {
-            alert('Недостатньо очок!');
-        }
-    });
