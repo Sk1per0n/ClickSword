@@ -12,6 +12,11 @@ header a{
     width: 160px;
 }
 
+h2{
+    disply:flex;
+    justify-content:flex-end
+}
+
 .upgrade1{
     margin-top: 100px;
     display: flex;
