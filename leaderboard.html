@@ -17,7 +17,7 @@
     </header>
 
     <main>
-        <h1>🏆 Таблиця лідерів (Загалом кліків)</h1>
+        <h1>🏆 Таблиця лідерів</h1>
         <div class="leaderboard-list" id="leaderboardContainer">
             <!-- Тут будуть з'являтися гравці -->
         </div>
@@ -32,7 +32,6 @@
 
         if (Object.keys(usersData).length > 0) {
             sortedUsers = Object.entries(usersData).map(([username, data]) => {
-                // Беремо загальну кількість кліків, яка не зменшується при покупках
                 let totalClicks = localStorage.getItem('totalClicks_' + username);
                 let score = totalClicks !== null ? parseInt(totalClicks) : (data.score || 0);
                 return [username, score];
@@ -53,7 +52,7 @@
         sortedUsers.forEach(([username, score], index) => {
             const item = document.createElement('div');
             item.className = 'leader-item';
-            item.innerHTML = `<span>#${index + 1} ${username}</span> <span>${score} кліків загалом</span>`;
+            item.innerHTML = `<span>#${index + 1} ${username}</span> <span>${score} Click</span>`;
             container.appendChild(item);
         });
     });
