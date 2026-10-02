@@ -27,25 +27,22 @@
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('leaderboardContainer');
         
-        // Спочатку перевіримо оновлену базу даних з паролями та очками
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         let sortedUsers = [];
 
-        // Якщо є дані з нової системи, беремо їх звідти
         if (Object.keys(usersData).length > 0) {
             sortedUsers = Object.entries(usersData).map(([username, data]) => {
-                // Також перевіряємо актуальний баланс з гри, якщо гравець щойно клікав
-                let currentScore = localStorage.getItem('userCounter_' + username);
-                let score = currentScore !== null ? parseInt(currentScore) : (data.score || 0);
+                // Беремо загальну кількість кліків, яка не зменшується при покупках
+                let totalClicks = localStorage.getItem('totalClicks_' + username);
+                let score = totalClicks !== null ? parseInt(totalClicks) : (data.score || 0);
                 return [username, score];
             });
         } else {
-            // Запасний варіант зі старого сховища
             let legacyUsers = JSON.parse(localStorage.getItem('gameUsers')) || {};
             sortedUsers = Object.entries(legacyUsers);
         }
 
-        // Сортуємо від найбільшої кількості очок до найменшої
+        // Сортуємо від найбільшої кількості до найменшої
         sortedUsers.sort((a, b) => b[1] - a[1]);
 
         if (sortedUsers.length === 0) {
@@ -53,7 +50,6 @@
             return;
         }
 
-        // Виводимо кожного гравця на сторінку
         sortedUsers.forEach(([username, score], index) => {
             const item = document.createElement('div');
             item.className = 'leader-item';
