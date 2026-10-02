@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
     <meta charset="UTF-8">
     <title> Магазин </title>
     <link rel="stylesheet" href="style2.css">
 </head>
-<body>
+<body class="shop-body">
     <header>
         <a href="index.html">Home</a>
     </header>
