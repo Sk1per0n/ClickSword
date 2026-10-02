@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logoutBtn');
     const greeting = document.getElementById('greeting');
 
-    // Перевіряємо, хто зараз увійшов в систему
     let currentUser = localStorage.getItem('currentUser');
 
-    // Якщо ніхто не увійшов, створюємо/використовуємо гостьовий акаунт або вимагаємо вхід
     if (!currentUser) {
         currentUser = 'Гість';
     } else {
@@ -20,10 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
         greeting.textContent = `Привіт, ${currentUser}!`;
     }
 
-    // Унікальні ключі для localStorage для конкретного гравця
-    const counterKey = 'userCounter_' + currentUser;
+    const counterKey = 'userCounter_' + currentUser;       // Баланс для покупок
+    const totalClicksKey = 'totalClicks_' + currentUser; // Загальна кількість для лідерборду
     const powerKey = 'clickPower_' + currentUser;
 
+    // Поточні очки для магазину
     let currentValue = localStorage.getItem(counterKey) 
         ? parseInt(localStorage.getItem(counterKey)) 
         : 0;
@@ -36,17 +35,19 @@ document.addEventListener('DOMContentLoaded', function() {
             ? parseInt(localStorage.getItem(powerKey)) 
             : 1;
 
+        // Збільшуємо баланс для покупок
         currentValue += currentClickPower;
         counterSpan.textContent = currentValue;
-        
-        // Зберігаємо очки для цього гравця
         localStorage.setItem(counterKey, currentValue);
 
-        // Оновлюємо загальний список для лідерборду
-        updateLeaderboardData(currentUser, currentValue);
+        // Збільшуємо ЗАГАЛЬНУ кількість кліків (вона ніколи не зменшується!)
+        let totalClicks = localStorage.getItem(totalClicksKey) 
+            ? parseInt(localStorage.getItem(totalClicksKey)) 
+            : 0;
+        totalClicks += currentClickPower;
+        localStorage.setItem(totalClicksKey, totalClicks);
     });
 
-    // Кнопка Виходу з аккаунта
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
             localStorage.removeItem('currentUser');
@@ -54,13 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
-// Функція оновлення бази гравців для лідерборду
-function updateLeaderboardData(username, score) {
-    let users = JSON.parse(localStorage.getItem('gameUsers')) || {};
-    users[username] = score;
-    localStorage.setItem('gameUsers', JSON.stringify(users));
-}
 
 // Логіка темної теми
 const toggleButton = document.getElementById('theme-toggle');
