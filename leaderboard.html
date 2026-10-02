@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лідерборд</title>
+    <link rel="stylesheet" href="style2.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .leaderboard-list { width: 50%; margin: 30px auto; display: flex; flex-direction: column; gap: 10px; }
+        .leader-item { display: flex; justify-content: space-between; padding: 15px 20px; background: #f0f0f0; border-radius: 8px; font-size: 20px; font-weight: bold; }
+        body.dark-theme .leader-item { background: #1e1e1e; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">Home</a>
+    </header>
+
+    <main>
+        <h1>🏆 Таблиця лідерів</h1>
+        <div class="leaderboard-list" id="leaderboardContainer">
+            <!-- Тут будуть з'являтися гравці -->
+        </div>
+    </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('leaderboardContainer');
+        
+        // Отримуємо всіх користувачів із localStorage
+        let users = JSON.parse(localStorage.getItem('gameUsers')) || {};
+
+        // Перетворюємо об'єкт в масив для сортування: [["Ім'я", очко], ...]
+        let sortedUsers = Object.entries(users);
+
+        // Сортуємо від найбільшої кількості очок до найменшої
+        sortedUsers.sort((a, b) => b[1] - a[1]);
+
+        if (sortedUsers.length === 0) {
+            container.innerHTML = '<p>Поки що немає зареєстрованих гравців.</p>';
+            return;
+        }
+
+        // Виводимо кожного гравця на сторінку
+        sortedUsers.forEach(([username, score], index) => {
+            const item = document.createElement('div');
+            item.className = 'leader-item';
+            item.innerHTML = `<span>#${index + 1} ${username}</span> <span>${score} кліків</span>`;
+            container.appendChild(item);
+        });
+    });
+</script>
+</body>
+</html>
