@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html lang="uk">
-    
 <head>
-    
     <script>
-        // Применяем класс сразу при загрузке DOM, чтобы избежать вспышки белого цвета
+        // Застосовуємо тему одразу при завантаженні, щоб уникнути білого спалаху
         if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark-theme'); // Добавляем к <html> или <body>
+            document.documentElement.classList.add('dark-theme');
         }
-</script>
-    
+    </script>
     <meta charset="UTF-8">
-    <title> Настройкі </title>
+    <title>Налаштування - ClickSword</title>
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
     <header>
-    
-    <a href="index.html">Home</a>
-    
+        <a href="index.html" class="home-btn">🏠</a>
     </header>
 
-    <main>
-        
-        <button id="theme-toggle">🌙 Темна тема</button>
-        
+    <main class="settings-container">
+        <h1>⚙️ Налаштування</h1>
+        <div class="settings-card">
+            <p>Змінити зовнішній вигляд гри:</p>
+            <button id="theme-toggle">🌙 Темна тема</button>
+        </div>
     </main>
     
 <script src="script.js"></script>
-    
 </body>   
 </html>
