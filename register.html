@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Реєстрація</title>
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
+        .form-box { display: flex; flex-direction: column; gap: 15px; width: 300px; }
+        input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 10px; font-size: 16px; background-color: cyan; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        a { text-decoration: none; color: #000; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Реєстрація акаунта</h2>
+    <div class="form-box">
+        <input type="text" id="regUser" placeholder="Введіть ім'я користувача">
+        <button id="regBtn">Зареєструватися</button>
+        <a href="index.html">← На головну</a>
+    </div>
+
+<script>
+    document.getElementById('regBtn').addEventListener('click', function() {
+        let username = document.getElementById('regUser').value.trim();
+        if (!username) {
+            alert('Введіть ім\'я!');
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('gameUsers')) || {};
+        
+        if (users[username] !== undefined) {
+            alert('Такий користувач вже існує! Оберіть інше ім\'я або увійдіть.');
+            return;
+        }
+
+        // Реєструємо і одразу входимо
+        users[username] = 0;
+        localStorage.setItem('gameUsers', JSON.stringify(users));
+        localStorage.setItem('currentUser', username);
+        
+        alert('Успішна реєстрація!');
+        window.location.href = 'index.html';
+    });
+</script>
+</body>
+</html>
