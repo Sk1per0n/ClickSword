@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (counterSpan) counterSpan.textContent = currentValue;
 
-    // ЗАБОРОНА КЛІКІВ З КЛАВІАТУРИ (тільки мишка)
     if (button) {
+        // Повністю забороняємо спрацьовування кнопки від клавіатури
         button.addEventListener('keydown', function(event) {
             if (event.code === 'Space' || event.code === 'Enter') {
                 event.preventDefault();
@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 : 0;
             totalClicks += currentClickPower;
             localStorage.setItem(totalClicksKey, totalClicks);
+
+            // Знімаємо фокус, щоб пробіл та Enter не активували кнопку знову
+            button.blur();
         });
     }
 
@@ -63,3 +66,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Логіка темної теми
+const toggleButton = document.getElementById('theme-toggle');
+const body = document.body;
+
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-theme');
+    if (toggleButton) toggleButton.textContent = '☀️ Світла тема';
+}
+
+if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+
+        if (body.classList.contains('dark-theme')) {
+            toggleButton.textContent = '☀️ Світла тема';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            toggleButton.textContent = '🌙 Темна тема';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+}
