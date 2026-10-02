@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+    }
+    
     const shopCounter = document.getElementById('shop-counter');
 
     let currentUser = localStorage.getItem('currentUser') || 'Гість';
