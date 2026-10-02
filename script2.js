@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ? parseInt(localStorage.getItem(powerKey)) 
         : 1;
 
-    shopCounter.textContent = currentValue;
+    if (shopCounter) shopCounter.textContent = currentValue;
 
     function setupUpgrade(buttonId, baseCost, powerIncrease, costMultiplier = 1.30) {
         const button = document.getElementById(buttonId);
@@ -43,15 +43,15 @@ document.addEventListener('DOMContentLoaded', function() {
             let currentCost = getCurrentCost();
 
             if (currentValue >= currentCost) {
-                currentValue -= currentCost; // Зменшуємо тільки баланс для покупок
-                clickPower += powerIncrease;
+                currentValue -= currentCost; // Зменшуємо баланс
+                clickPower += powerIncrease; // Збільшуємо силу кліку
                 count++;
                 
                 localStorage.setItem(counterKey, currentValue);
                 localStorage.setItem(powerKey, clickPower);
                 localStorage.setItem(countKey, count);
                 
-                shopCounter.textContent = currentValue;
+                if (shopCounter) shopCounter.textContent = currentValue;
                 updateDisplay();
                 
                 alert('Успішна покупка!');
