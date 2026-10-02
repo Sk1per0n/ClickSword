@@ -1,33 +1,66 @@
 document.addEventListener('DOMContentLoaded', function() {
     const button = document.getElementById('Button');
     const counterSpan = document.getElementById('counter');
+    const authContainer = document.getElementById('authContainer');
+    const userPanel = document.getElementById('userPanel');
+    const currentUserNameSpan = document.getElementById('currentUserName');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const greeting = document.getElementById('greeting');
 
-    // 1. Читаємо збережене значення очок з localStorage. Якщо немає — 0.
-    let currentValue = localStorage.getItem('userCounter') 
-        ? parseInt(localStorage.getItem('userCounter')) 
+    // Перевіряємо, хто зараз увійшов в систему
+    let currentUser = localStorage.getItem('currentUser');
+
+    // Якщо ніхто не увійшов, створюємо/використовуємо гостьовий акаунт або вимагаємо вхід
+    if (!currentUser) {
+        currentUser = 'Гість';
+    } else {
+        authContainer.style.display = 'none';
+        userPanel.style.display = 'flex';
+        currentUserNameSpan.textContent = `Аккаунт: ${currentUser}`;
+        greeting.textContent = `Привіт, ${currentUser}!`;
+    }
+
+    // Унікальні ключі для localStorage для конкретного гравця
+    const counterKey = 'userCounter_' + currentUser;
+    const powerKey = 'clickPower_' + currentUser;
+
+    let currentValue = localStorage.getItem(counterKey) 
+        ? parseInt(localStorage.getItem(counterKey)) 
         : 0;
     
-    // Одразу виводимо очки на екран
     counterSpan.textContent = currentValue;
 
-    // 2. Обробка кліку по головній кнопці
+    // Клік по головній кнопці
     button.addEventListener('click', function() {
-        // ЗАВЖДИ знову зчитуємо актуальну силу кліку з localStorage, 
-        // щоб гра знала, якщо ти щойно купив покращення в магазині!
-        let currentClickPower = localStorage.getItem('clickPower') 
-            ? parseInt(localStorage.getItem('clickPower')) 
+        let currentClickPower = localStorage.getItem(powerKey) 
+            ? parseInt(localStorage.getItem(powerKey)) 
             : 1;
 
-        // Додаємо до очок силу кліку (а не просто 1)
         currentValue += currentClickPower;
-        
-        // Змінюємо текст на сторінці
         counterSpan.textContent = currentValue;
         
-        // Зберігаємо оновлене число очок в пам'ять браузера
-        localStorage.setItem('userCounter', currentValue);
+        // Зберігаємо очки для цього гравця
+        localStorage.setItem(counterKey, currentValue);
+
+        // Оновлюємо загальний список для лідерборду
+        updateLeaderboardData(currentUser, currentValue);
     });
+
+    // Кнопка Виходу з аккаунта
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        });
+    }
 });
+
+// Функція оновлення бази гравців для лідерборду
+function updateLeaderboardData(username, score) {
+    let users = JSON.parse(localStorage.getItem('gameUsers')) || {};
+    users[username] = score;
+    localStorage.setItem('gameUsers', JSON.stringify(users));
+}
 
 // Логіка темної теми
 const toggleButton = document.getElementById('theme-toggle');
