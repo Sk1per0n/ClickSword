@@ -7,35 +7,68 @@
         }
     </script>
     <meta charset="UTF-8">
-    <title> Магазин </title>
+    <title>Магазин - ClickSword</title>
     <link rel="stylesheet" href="style2.css">
 </head>
-<body class="shop-body">
+<body>
     <header>
-        <a href="index.html">Home</a>
+        <a href="index.html" class="home-btn">🏠</a>
     </header>
     
-    <main>
-        <!-- Виводимо баланс очок у магазині -->
-        <h2>Ваші очки: <span id="shop-counter">0</span></h2>
+    <main class="shop-container">
+        <h1>🛒 Магазин покращень</h1>
+        <div class="balance-card">
+            <h2>Ваші очки: <span id="shop-counter">0</span></h2>
+        </div>
         
-        <div class="shop">
-            <div class="upgrade1">  
-                <button class="up1" id="up1">Клік +1 | Ціна: <span class="cost">100</span> | Куплено: <span class="count">0</span></button>  
-                <button class="up2" id="up2">Клік +2 | Ціна: <span class="cost">250</span> | Куплено: <span class="count">0</span></button>
-            </div>
-            <div class="upgrade1">  
-                <button class="up1" id="up3">Клік +5 | Ціна: <span class="cost">500</span> | Куплено: <span class="count">0</span></button>  
-                <button class="up2" id="up4">Клік +10 | Ціна: <span class="cost">1500</span> | Куплено: <span class="count">0</span></button>
-            </div>
-            <div class="upgrade1">  
-                <button class="up1" id="up5">Клік +15 | Ціна: <span class="cost">2000</span> | Куплено: <span class="count">0</span></button>  
-                <button class="up2" id="up6">Клік +20 | Ціна: <span class="cost">3000</span> | Куплено: <span class="count">0</span></button>
-            </div>
-            <div class="upgrade1">  
-                <button class="up1" id="up7">Клік +50 | Ціна: <span class="cost">50000</span> | Куплено: <span class="count">0</span></button>  
-                <button class="up2" id="up8">Клік +100 | Ціна: <span class="cost">150000</span> | Куплено: <span class="count">0</span></button>
-            </div>
+        <div class="shop-grid">
+            <button class="shop-card" id="up1">
+                <div class="upgrade-title">Клік +1</div>
+                <div class="upgrade-info">Ціна: <span class="cost">100</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+            
+            <button class="shop-card" id="up2">
+                <div class="upgrade-title">Клік +2</div>
+                <div class="upgrade-info">Ціна: <span class="cost">250</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up3">
+                <div class="upgrade-title">Клік +5</div>
+                <div class="upgrade-info">Ціна: <span class="cost">500</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up4">
+                <div class="upgrade-title">Клік +10</div>
+                <div class="upgrade-info">Ціна: <span class="cost">1500</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up5">
+                <div class="upgrade-title">Клік +15</div>
+                <div class="upgrade-info">Ціна: <span class="cost">2000</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up6">
+                <div class="upgrade-title">Клік +20</div>
+                <div class="upgrade-info">Ціна: <span class="cost">3000</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up7">
+                <div class="upgrade-title">Клік +50</div>
+                <div class="upgrade-info">Ціна: <span class="cost">50000</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
+
+            <button class="shop-card" id="up8">
+                <div class="upgrade-title">Клік +100</div>
+                <div class="upgrade-info">Ціна: <span class="cost">150000</span></div>
+                <div class="upgrade-count">Куплено: <span class="count">0</span></div>
+            </button>
         </div>
     </main>
     
