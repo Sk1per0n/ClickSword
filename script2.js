@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const shopCounter = document.getElementById('shop-counter');
 
-    // Визначаємо поточного гравця
     let currentUser = localStorage.getItem('currentUser') || 'Гість';
 
     const counterKey = 'userCounter_' + currentUser;
@@ -44,20 +43,14 @@ document.addEventListener('DOMContentLoaded', function() {
             let currentCost = getCurrentCost();
 
             if (currentValue >= currentCost) {
-                currentValue -= currentCost; 
+                currentValue -= currentCost; // Зменшуємо тільки баланс для покупок
                 clickPower += powerIncrease;
                 count++;
                 
-                // Зберігаємо персональні дані для цього аккаунта
                 localStorage.setItem(counterKey, currentValue);
                 localStorage.setItem(powerKey, clickPower);
                 localStorage.setItem(countKey, count);
                 
-                // Також оновлюємо глобальну таблицю лідерів
-                let users = JSON.parse(localStorage.getItem('gameUsers')) || {};
-                users[currentUser] = currentValue;
-                localStorage.setItem('gameUsers', JSON.stringify(users));
-
                 shopCounter.textContent = currentValue;
                 updateDisplay();
                 
