@@ -1,31 +1,62 @@
-header a{
+/* Базові стилі */
+body {
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Темна тема для магазину */
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-theme header a {
+    color: black; /* Кнопка назад залишається контрастною */
+}
+
+body.dark-theme h2 {
+    color: #ffffff;
+}
+
+/* Стиль самих кнопок апгрейдів у темній темі */
+body.dark-theme .upgrade1 button {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 2px solid #ff79c6;
+}
+
+header a {
     position: fixed;
-    font-size:50px;
+    font-size: 50px;
     top: 20px;  
     left: 20px; 
     z-index: 1000;
-    text-decoration:none;
+    text-decoration: none;
     text-align: center;
-    color:black;
-    background-color:cyan;
+    color: black;
+    background-color: cyan;
     border-radius: 50%;
     width: 160px;
 }
 
-h2{
-    text-align:end;
+h2 {
+    text-align: end;
+    margin-right: 30px;
 }
 
-.upgrade1{
+.upgrade1 {
     margin-top: 100px;
     display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
-.up1{
-    margin-left: 20%;
-}
-
-.up2{
-    margin-left: 20%;
-    
+.upgrade1 button {
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #000;
+    background-color: #f0f0f0;
 }
