@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-
     <script>
-        // Применяем класс сразу при загрузке DOM, чтобы избежать вспышки белого цвета
         if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark-theme'); // Добавляем к <html> или <body>
+            document.documentElement.classList.add('dark-theme');
         }
-</script>
-    
+    </script>
     <meta charset="UTF-8">
     <title> Головна </title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        
+    <!-- Верхні кнопки для авторизації -->
+    <div class="auth-buttons" id="authContainer">
+        <a href="register.html" class="auth-btn reg-btn">Реєстрація</a>
+        <a href="login.html" class="auth-btn login-btn">Вхід</a>
+    </div>
+
+    <!-- Блок для відображення імені та кнопки виходу (спочатку прихований) -->
+    <div class="user-panel" id="userPanel" style="display: none;">
+        <span id="currentUserName">Гравець</span>
+        <button id="logoutBtn">Вийти</button>
+    </div>
+
     <main>
+        <h2 id="greeting" style="margin-bottom: 5px;"></h2>
         <h1> ClickSword: <span id="counter">0</span></h1>
         
         <button id="Button"></button>
         
         <div class="perehod">
             <a href="shop.html">Shop</a>
+            <a href="leaderboard.html">Leaderboard</a>
             <a href="stat.html">Setings</a>
         </div>
     </main>
-    
     
 <script src="script.js"></script>
 </body>
