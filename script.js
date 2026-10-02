@@ -11,42 +11,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!currentUser) {
         currentUser = 'Гість';
+        if (authContainer) authContainer.style.display = 'flex';
+        if (userPanel) userPanel.style.display = 'none';
     } else {
-        authContainer.style.display = 'none';
-        userPanel.style.display = 'flex';
-        currentUserNameSpan.textContent = `Аккаунт: ${currentUser}`;
-        greeting.textContent = `Привіт, ${currentUser}!`;
+        if (authContainer) authContainer.style.display = 'none';
+        if (userPanel) userPanel.style.display = 'flex';
+        if (currentUserNameSpan) currentUserNameSpan.textContent = `Аккаунт: ${currentUser}`;
+        if (greeting) greeting.textContent = `Привіт, ${currentUser}!`;
     }
 
     const counterKey = 'userCounter_' + currentUser;       // Баланс для покупок
     const totalClicksKey = 'totalClicks_' + currentUser; // Загальна кількість для лідерборду
     const powerKey = 'clickPower_' + currentUser;
 
-    // Поточні очки для магазину
+    // Читаємо поточні очки для магазину
     let currentValue = localStorage.getItem(counterKey) 
         ? parseInt(localStorage.getItem(counterKey)) 
         : 0;
     
-    counterSpan.textContent = currentValue;
+    if (counterSpan) counterSpan.textContent = currentValue;
 
     // Клік по головній кнопці
-    button.addEventListener('click', function() {
-        let currentClickPower = localStorage.getItem(powerKey) 
-            ? parseInt(localStorage.getItem(powerKey)) 
-            : 1;
+    if (button) {
+        button.addEventListener('click', function() {
+            let currentClickPower = localStorage.getItem(powerKey) 
+                ? parseInt(localStorage.getItem(powerKey)) 
+                : 1;
 
-        // Збільшуємо баланс для покупок
-        currentValue += currentClickPower;
-        counterSpan.textContent = currentValue;
-        localStorage.setItem(counterKey, currentValue);
+            // Збільшуємо баланс для покупок
+            currentValue += currentClickPower;
+            if (counterSpan) counterSpan.textContent = currentValue;
+            localStorage.setItem(counterKey, currentValue);
 
-        // Збільшуємо ЗАГАЛЬНУ кількість кліків (вона ніколи не зменшується!)
-        let totalClicks = localStorage.getItem(totalClicksKey) 
-            ? parseInt(localStorage.getItem(totalClicksKey)) 
-            : 0;
-        totalClicks += currentClickPower;
-        localStorage.setItem(totalClicksKey, totalClicks);
-    });
+            // Збільшуємо ЗАГАЛЬНУ кількість кліків для лідерборду
+            let totalClicks = localStorage.getItem(totalClicksKey) 
+                ? parseInt(localStorage.getItem(totalClicksKey)) 
+                : 0;
+            totalClicks += currentClickPower;
+            localStorage.setItem(totalClicksKey, totalClicks);
+        });
+    }
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
