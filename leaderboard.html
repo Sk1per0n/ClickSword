@@ -21,6 +21,7 @@
             padding: 0;
             transition: background 0.3s, color 0.3s;
         }
+        html.dark-theme body,
         body.dark-theme {
             background-color: #121212;
             color: #f1f1f1;
@@ -50,6 +51,7 @@
             max-width: 400px;
             transition: background 0.3s, box-shadow 0.3s;
         }
+        html.dark-theme .leaderboard-card,
         body.dark-theme .leaderboard-card {
             background: #1e1e1e;
             box-shadow: 0 4px 15px rgba(255,255,255,0.05);
@@ -63,6 +65,7 @@
             padding: 12px;
             border-bottom: 1px solid #ddd;
         }
+        html.dark-theme th, html.dark-theme td,
         body.dark-theme th, body.dark-theme td {
             border-bottom: 1px solid #333;
         }
@@ -70,6 +73,7 @@
             background-color: #f8f9fa;
             color: #333;
         }
+        html.dark-theme th,
         body.dark-theme th {
             background-color: #252525;
             color: #fff;
@@ -79,6 +83,7 @@
             padding: 20px;
             color: #777;
         }
+        html.dark-theme .no-data,
         body.dark-theme .no-data {
             color: #aaa;
         }
@@ -117,14 +122,19 @@
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         
         let usersArray = Object.keys(usersData).map(username => {
-            let score = usersData[username].score || 0;
-            let specificCounter = localStorage.getItem('userCounter_' + username);
-            if (specificCounter !== null) {
-                score = parseInt(specificCounter, 10);
+            let userData = usersData[username];
+            // Витягуємо загальний рахунок (підтримуємо різні варіанти структури об'єкта)
+            let score = 0;
+            if (typeof userData === 'object' && userData !== null) {
+                score = userData.score !== undefined ? userData.score : (userData.points || 0);
+            } else if (typeof userData === 'number') {
+                score = userData;
             }
+            
             return { username: username, score: score };
         });
 
+        // Сортуємо за спаданням рахунку (найбільший — зверху)
         usersArray.sort((a, b) => b.score - a.score);
 
         if (usersArray.length === 0) {
