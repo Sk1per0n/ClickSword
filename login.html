@@ -2,6 +2,7 @@
 <html lang="uk">
 <head>
     <script>
+        // Миттєво перевіряємо і додаємо клас темної теми на весь документ ще до малювання сторінки
         const isDark = localStorage.getItem('theme') === 'dark' || 
                        localStorage.getItem('darkTheme') === 'true' || 
                        localStorage.getItem('isDark') === 'true';
@@ -21,6 +22,8 @@
             padding: 0;
             transition: background 0.3s, color 0.3s;
         }
+        /* Підтримка темної теми через загальний клас на html або body */
+        html.dark-theme body,
         body.dark-theme {
             background-color: #121212;
             color: #f1f1f1;
@@ -44,6 +47,7 @@
             align-items: center;
             transition: background 0.3s, box-shadow 0.3s;
         }
+        html.dark-theme .settings-card,
         body.dark-theme .settings-card {
             background: #1e1e1e;
             box-shadow: 0 4px 15px rgba(255,255,255,0.05);
@@ -58,6 +62,7 @@
             color: #333;
             transition: background 0.3s, border 0.3s, color 0.3s;
         }
+        html.dark-theme .settings-card input,
         body.dark-theme .settings-card input {
             background: #2d2d2d;
             border: 2px solid #444;
@@ -74,6 +79,7 @@
             width: 95%;
             transition: background 0.3s;
         }
+        html.dark-theme .settings-card button,
         body.dark-theme .settings-card button {
             background: #03dac6;
             color: #121212;
@@ -100,6 +106,7 @@
             transition: bottom 0.3s ease-in-out;
             z-index: 1000;
         }
+        html.dark-theme .toast,
         body.dark-theme .toast {
             background: #bb86fc;
             color: #121212;
@@ -126,6 +133,7 @@
     </main>
 
 <script>
+    // Гарантовано додаємо клас і до body при завантаженні скрипта
     if (isDark) {
         document.body.classList.add('dark-theme');
     }
@@ -146,29 +154,23 @@
         const username = document.getElementById('loginUser').value.trim();
         const password = document.getElementById('loginPass').value.trim();
 
-        // Завантажуємо бази користувачів
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         console.log("Всі зареєстровані користувачі:", usersData);
 
-        // Перевіряємо, чи існує користувач
         if (!usersData[username]) {
-            console.log("Користувача не знайдено:", username);
             showToast('❌ Такого користувача не існує!');
             return;
         }
 
-        // Перевіряємо пароль (підтримуємо як об'єкт {password: '...'}, так і просто рядок, якщо у тебе так зберігалося раніше)
         let storedPassword = typeof usersData[username] === 'object' ? usersData[username].password : usersData[username];
 
         if (storedPassword === password) {
             localStorage.setItem('currentUser', username);
-            console.log("Успішний вхід для:", username);
             showToast('✨ Успішний вхід!');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1000);
         } else {
-            console.log("Неправильний пароль. Введено:", password, "Очікувалося:", storedPassword);
             showToast('❌ Неправильний пароль!');
         }
     });
