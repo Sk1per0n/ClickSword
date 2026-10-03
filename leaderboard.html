@@ -102,7 +102,7 @@
                     <tr>
                         <th>Місце</th>
                         <th>Гравець</th>
-                        <th>Рахунок</th>
+                        <th>Загальний рахунок</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
@@ -122,26 +122,24 @@
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         
         let usersArray = Object.keys(usersData).map(username => {
-            let score = 0;
+            // Шукаємо спеціально загальний рахунок (totalClicks або збережений score в базі)
+            let totalScore = 0;
             
-            // 1. Спочатку перевіряємо персональний лічильник гравця (де зберігаються поточні кліки)
-            let specificCounter = localStorage.getItem('userCounter_' + username);
-            if (specificCounter !== null) {
-                score = parseInt(specificCounter, 10);
+            let totalClicksKey = localStorage.getItem('totalClicks_' + username);
+            if (totalClicksKey !== null) {
+                totalScore = parseInt(totalClicksKey, 10);
+            } else if (usersData[username] && typeof usersData[username] === 'object' && usersData[username].score !== undefined) {
+                totalScore = usersData[username].score;
             } else {
-                // 2. Якщо його немає, беремо з бази даних
-                let userData = usersData[username];
-                if (typeof userData === 'object' && userData !== null) {
-                    score = userData.score !== undefined ? userData.score : (userData.points || 0);
-                } else if (typeof userData === 'number') {
-                    score = userData;
-                }
+                // Якщо окремого загального немає, беремо поточний
+                let specificCounter = localStorage.getItem('userCounter_' + username);
+                totalScore = specificCounter !== null ? parseInt(specificCounter, 10) : 0;
             }
             
-            return { username: username, score: score };
+            return { username: username, score: totalScore };
         });
 
-        // Сортуємо за спаданням рахунку
+        // Сортуємо за спаданням
         usersArray.sort((a, b) => b.score - a.score);
 
         if (usersArray.length === 0) {
