@@ -7,32 +7,32 @@
         }
     </script>
     <meta charset="UTF-8">
-    <title> Головна </title>
+    <title>Головна - ClickSword</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Верхні кнопки для авторизації -->
+    <!-- Верхні кнопки авторизації -->
     <div class="auth-buttons" id="authContainer">
         <a href="register.html" class="auth-btn reg-btn">Реєстрація</a>
         <a href="login.html" class="auth-btn login-btn">Вхід</a>
     </div>
 
-    <!-- Блок для відображення імені та кнопки виходу (спочатку прихований) -->
+    <!-- Панель користувача після входу -->
     <div class="user-panel" id="userPanel" style="display: none;">
         <span id="currentUserName">Гравець</span>
         <button id="logoutBtn">Вийти</button>
     </div>
 
-    <main>
-        <h2 id="greeting" style="margin-bottom: 5px;"></h2>
-        <h1> ClickSword: <span id="counter">0</span></h1>
+    <main class="main-container">
+        <h2 id="greeting" class="greeting-text"></h2>
+        <h1 class="score-title">ClickSword: <span id="counter">0</span></h1>
         
-        <button id="Button"></button>
+        <button id="Button" class="clicker-btn" title="Кликай сюди!"></button>
         
         <div class="perehod">
-            <a href="shop.html">Shop</a>
-            <a href="leaderboard.html">Leaderboard</a>
-            <a href="stat.html">Setings</a>
+            <a href="shop.html" class="nav-link">🛍️ Shop</a>
+            <a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a>
+            <a href="stat.html" class="nav-link">⚙️ Settings</a>
         </div>
     </main>
     
