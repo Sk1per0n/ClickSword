@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-theme');
-    }
-    
     const shopCounter = document.getElementById('shop-counter');
 
     let currentUser = localStorage.getItem('currentUser') || 'Гість';
@@ -20,6 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
         : 1;
 
     if (shopCounter) shopCounter.textContent = currentValue;
+
+    // Функція для красивих спливаючих сповіщень
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1500);
+    }
 
     function setupUpgrade(buttonId, baseCost, powerIncrease, costMultiplier = 1.30) {
         const button = document.getElementById(buttonId);
@@ -48,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let currentCost = getCurrentCost();
 
             if (currentValue >= currentCost) {
-                currentValue -= currentCost; // Зменшуємо баланс
-                clickPower += powerIncrease; // Збільшуємо силу кліку
+                currentValue -= currentCost; 
+                clickPower += powerIncrease; 
                 count++;
                 
                 localStorage.setItem(counterKey, currentValue);
@@ -59,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (shopCounter) shopCounter.textContent = currentValue;
                 updateDisplay();
                 
-                alert('Успішна покупка!');
+                showToast('✨ Успішна покупка!');
             } else {
-                alert('Недостатньо очок!');
+                showToast('❌ Недостатньо очок!');
             }
         });
     }
@@ -75,3 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupUpgrade('up7', 50000, 50);
     setupUpgrade('up8', 150000, 100);
 });
+
+// Автоматичне застосування темної теми в магазині
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+}
