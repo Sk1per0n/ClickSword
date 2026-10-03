@@ -106,7 +106,7 @@
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
-                    <tr><td colspan="3" class="no-data">Завантаження лідерів з хмари...</td></tr>
+                    <tr><td colspan="3" class="no-data">Синхронізація з хмарою...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -117,32 +117,61 @@
         document.body.classList.add('dark-theme');
     }
 
-    // ТВОЇ ДАНІ З JSONBIN.IO (Встав сюди свої ключі)
     const BIN_ID = '6ac0c050ac6210605a0ee2a3';
     const API_KEY = '$2a$10$.4uggn6AMRp8c0UYkvUTM.OhfSsg0iRZckZJ9CeiJLH57c7eNyKnu';
 
-    async function loadCloudLeaderboard() {
+    async function syncAndLoadLeaderboard() {
         const tbody = document.getElementById('leaderboardBody');
         try {
+            // 1. Отримуємо поточні дані з хмари
             const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                headers: {
-                    'X-Master-Key': API_KEY
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            const result = await response.json();
+            let playersObj = result.record.players || {};
+
+            let updated = false;
+
+            // 2. Збираємо локальні дані гравців цього комп'ютера і додаємо в хмару
+            let localUsersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
+            Object.keys(localUsersData).forEach(username => {
+                let score = 0;
+                let specificCounter = localStorage.getItem('userCounter_' + username);
+                if (specificCounter !== null) {
+                    score = parseInt(specificCounter, 10);
+                } else if (localUsersData[username].score !== undefined) {
+                    score = localUsersData[username].score;
+                }
+
+                // Якщо гравця немає в хмарі або локальний рахунок більший — оновлюємо
+                if (playersObj[username] === undefined || score > playersObj[username]) {
+                    playersObj[username] = score;
+                    updated = true;
                 }
             });
-            
-            const result = await response.json();
-            const playersObj = result.record.players || {};
 
+            // 3. Якщо з'явилися нові дані, відправляємо оновлений список назад у хмару
+            if (updated) {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify({ players: playersObj })
+                });
+            }
+
+            // 4. Формуємо масив для відображення
             let usersArray = Object.keys(playersObj).map(username => ({
                 username: username,
                 score: playersObj[username]
             }));
 
-            // Сортуємо від найбільшого до найменшого
             usersArray.sort((a, b) => b.score - a.score);
 
             if (usersArray.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="no-data">Ще немає гравців у хмарі!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="no-data">Ще немає гравців!</td></tr>`;
                 return;
             }
 
@@ -164,12 +193,12 @@
             });
 
         } catch (error) {
-            console.error("Помилка завантаження хмари:", error);
-            tbody.innerHTML = `<tr><td colspan="3" class="no-data">Помилка підключення до хмари лідерів</td></tr>`;
+            console.error("Помилка хмари:", error);
+            tbody.innerHTML = `<tr><td colspan="3" class="no-data">Помилка завантаження лідерів</td></tr>`;
         }
     }
 
-    document.addEventListener('DOMContentLoaded', loadCloudLeaderboard);
+    document.addEventListener('DOMContentLoaded', syncAndLoadLeaderboard);
 </script>
 </body>
 </html>
