@@ -122,19 +122,26 @@
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         
         let usersArray = Object.keys(usersData).map(username => {
-            let userData = usersData[username];
-            // Витягуємо загальний рахунок (підтримуємо різні варіанти структури об'єкта)
             let score = 0;
-            if (typeof userData === 'object' && userData !== null) {
-                score = userData.score !== undefined ? userData.score : (userData.points || 0);
-            } else if (typeof userData === 'number') {
-                score = userData;
+            
+            // 1. Спочатку перевіряємо персональний лічильник гравця (де зберігаються поточні кліки)
+            let specificCounter = localStorage.getItem('userCounter_' + username);
+            if (specificCounter !== null) {
+                score = parseInt(specificCounter, 10);
+            } else {
+                // 2. Якщо його немає, беремо з бази даних
+                let userData = usersData[username];
+                if (typeof userData === 'object' && userData !== null) {
+                    score = userData.score !== undefined ? userData.score : (userData.points || 0);
+                } else if (typeof userData === 'number') {
+                    score = userData;
+                }
             }
             
             return { username: username, score: score };
         });
 
-        // Сортуємо за спаданням рахунку (найбільший — зверху)
+        // Сортуємо за спаданням рахунку
         usersArray.sort((a, b) => b.score - a.score);
 
         if (usersArray.length === 0) {
