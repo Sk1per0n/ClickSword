@@ -2,7 +2,6 @@
 <html lang="uk">
 <head>
     <script>
-        // Перевіряємо різні можливі ключі темної теми в localStorage
         const isDark = localStorage.getItem('theme') === 'dark' || 
                        localStorage.getItem('darkTheme') === 'true' || 
                        localStorage.getItem('isDark') === 'true';
@@ -143,20 +142,34 @@
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        // Виправлено помилку з дужкою нижче:
+        
         const username = document.getElementById('loginUser').value.trim();
         const password = document.getElementById('loginPass').value.trim();
 
+        // Завантажуємо бази користувачів
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
+        console.log("Всі зареєстровані користувачі:", usersData);
 
-        if (usersData[username] && usersData[username].password === password) {
+        // Перевіряємо, чи існує користувач
+        if (!usersData[username]) {
+            console.log("Користувача не знайдено:", username);
+            showToast('❌ Такого користувача не існує!');
+            return;
+        }
+
+        // Перевіряємо пароль (підтримуємо як об'єкт {password: '...'}, так і просто рядок, якщо у тебе так зберігалося раніше)
+        let storedPassword = typeof usersData[username] === 'object' ? usersData[username].password : usersData[username];
+
+        if (storedPassword === password) {
             localStorage.setItem('currentUser', username);
+            console.log("Успішний вхід для:", username);
             showToast('✨ Успішний вхід!');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1000);
         } else {
-            showToast('❌ Неправильний логін або пароль!');
+            console.log("Неправильний пароль. Введено:", password, "Очікувалося:", storedPassword);
+            showToast('❌ Неправильний пароль!');
         }
     });
 </script>
