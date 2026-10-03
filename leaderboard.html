@@ -1,69 +1,158 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <!-- Миттєве застосування темної теми до завантаження сторінки, щоб не було миготіння -->
     <script>
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark-theme');
         }
     </script>
     <meta charset="UTF-8">
-    <title>Лідерборд - ClickSword</title>
-    <link rel="stylesheet" href="style2.css">
+    <title>Таблиця лідерів - ClickSword</title>
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+        body.dark-theme {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+        header {
+            padding: 20px;
+        }
+        .home-btn {
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .leaderboard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .leaderboard-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        body.dark-theme .leaderboard-card {
+            background: #1e1e1e;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        body.dark-theme th, body.dark-theme td {
+            border-bottom: 1px solid #333;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        body.dark-theme th {
+            background-color: #252525;
+            color: #fff;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+        body.dark-theme .no-data {
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
     <header>
         <a href="index.html" class="home-btn">🏠</a>
     </header>
 
-    <main class="shop-container">
+    <main class="leaderboard-container">
         <h1>🏆 Таблиця лідерів</h1>
-        <p class="subtitle">Найкращі гравці за загальною кількістю кліків</p>
-        
-        <div class="leaderboard-list" id="leaderboardContainer">
-            <!-- Тут будуть з'являтися гравці -->
+        <div class="leaderboard-card">
+            <table id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th>Місце</th>
+                        <th>Гравець</th>
+                        <th>Рахунок</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Дані заповнюватимуться автоматично через JavaScript -->
+                </tbody>
+            </table>
         </div>
     </main>
 
 <script>
+    // Додатково ставимо клас на body на випадок стилів
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('leaderboardContainer');
+        const tbody = document.getElementById('leaderboardBody');
         
+        // Отримуємо збережені дані користувачів з гри
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
-        let sortedUsers = [];
+        
+        // Перетворюємо об'єкт у масив для сортування [ [username, data], ... ]
+        let usersArray = Object.keys(usersData).map(username => {
+            // Збираємо актуальний рахунок для гравця (перевіряємо і загальний об'єкт, і окремий лічильник якщо є)
+            let score = usersData[username].score || 0;
+            let specificCounter = localStorage.getItem('userCounter_' + username);
+            if (specificCounter !== null) {
+                score = parseInt(specificCounter, 10);
+            }
+            return { username: username, score: score };
+        });
 
-        if (Object.keys(usersData).length > 0) {
-            sortedUsers = Object.entries(usersData).map(([username, data]) => {
-                let totalClicks = localStorage.getItem('totalClicks_' + username);
-                let score = totalClicks !== null ? parseInt(totalClicks) : (data.score || 0);
-                return [username, score];
-            });
-        } else {
-            let legacyUsers = JSON.parse(localStorage.getItem('gameUsers')) || {};
-            sortedUsers = Object.entries(legacyUsers);
-        }
+        // Сортуємо за спаданням рахунку (найбільші бали зверху)
+        usersArray.sort((a, b) => b.score - a.score);
 
-        sortedUsers.sort((a, b) => b[1] - a[1]);
-
-        if (sortedUsers.length === 0) {
-            container.innerHTML = '<p class="empty-text">Поки що немає зареєстрованих гравців.</p>';
+        // Якщо база порожня
+        if (usersArray.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" class="no-data">Ще немає зареєстрованих гравців!</td></tr>`;
             return;
         }
 
-        sortedUsers.forEach(([username, score], index) => {
-            const item = document.createElement('div');
-            item.className = 'leader-item';
-            
-            // Додаємо особливі іконки для топ-3 гравців
-            let medal = `#${index + 1}`;
-            if (index === 0) medal = '🥇';
-            if (index === 1) medal = '🥈';
-            if (index === 2) medal = '🥉';
+        // Заповнюємо таблицю лідерами
+        tbody.innerHTML = '';
+        usersArray.forEach((user, index) => {
+            let medal = '';
+            if (index === 0) medal = '🥇 ';
+            else if (index === 1) medal = '🥈 ';
+            else if (index === 2) medal = '🥉 ';
+            else medal = (index + 1) + '. ';
 
-            item.innerHTML = `
-                <div class="leader-user"><span class="medal">${medal}</span> ${username}</div> 
-                <div class="leader-score">${score} клік</div>
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${medal}</td>
+                <td>${user.username}</td>
+                <td>${user.score}</td>
             `;
-            container.appendChild(item);
+            tbody.appendChild(row);
         });
     });
 </script>
