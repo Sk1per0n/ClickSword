@@ -2,7 +2,6 @@
 <html lang="uk">
 <head>
     <script>
-        // Застосовуємо тему одразу при завантаженні, щоб уникнути білого спалаху
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark-theme');
         }
@@ -10,11 +9,37 @@
     <meta charset="UTF-8">
     <title>Вхід - ClickSword</title>
     <link rel="stylesheet" href="style1.css">
+    <style>
+        .toast {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00838f;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: bottom 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        body.dark-theme .toast {
+            background: #ff79c6;
+            color: #121212;
+        }
+        .toast.show {
+            bottom: 30px; 
+        }
+    </style>
 </head>
 <body>
     <header>
         <a href="index.html" class="home-btn">🏠</a>
     </header>
+
+    <div id="toast" class="toast">Повідомлення</div>
 
     <main class="settings-container">
         <h1>🔑 Вхід в акаунт</h1>
@@ -24,5 +49,35 @@
             <button type="submit" id="submitLogin" style="padding: 12px 24px; background: cyan; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; width: 90%;">Увійти</button>
         </form>
     </main>
+
+<script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1500);
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('loginUser').value.trim();
+        const password = document.getElementById('loginPass').value.trim();
+
+        let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
+
+        if (usersData[username] && usersData[username].password === password) {
+            localStorage.setItem('currentUser', username);
+            showToast('✨ Успішний вхід!');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        } else {
+            showToast('❌ Неправильний логін або пароль!');
+        }
+    });
+</script>
 </body>
 </html>
