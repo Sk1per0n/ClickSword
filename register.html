@@ -1,60 +1,27 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
     <meta charset="UTF-8">
-    <title>Реєстрація</title>
-    <link rel="stylesheet" href="style1.css">
-    <style>
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
-        .form-box { display: flex; flex-direction: column; gap: 15px; width: 300px; }
-        input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
-        button { padding: 10px; font-size: 16px; background-color: cyan; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        a { text-decoration: none; color: #000; margin-top: 10px; text-align: center; }
-    </style>
+    <title>Реєстрація - ClickSword</title>
+    <link rel="stylesheet" href="style1.css"> <!-- або стиль твоїх форм -->
 </head>
 <body>
-    <h2>Реєстрація акаунта</h2>
-    <div class="form-box">
-        <input type="text" id="regUser" placeholder="Ім'я користувача">
-        <input type="password" id="regPass" placeholder="Пароль">
-        <button id="regBtn">Зареєструватися</button>
-        <a href="index.html">← На головну</a>
-    </div>
+    <header>
+        <a href="index.html" class="home-btn">🏠</a>
+    </header>
 
-<script>
-    document.getElementById('regBtn').addEventListener('click', function() {
-        let username = document.getElementById('regUser').value.trim();
-        let password = document.getElementById('regPass').value.trim();
-
-        if (!username || !password) {
-            alert('Будь ласка, заповніть всі поля!');
-            return;
-        }
-
-        let users = JSON.parse(localStorage.getItem('gameUsersData')) || {};
-        
-        if (users[username] !== undefined) {
-            alert('Такий користувач вже існує! Оберіть інше ім\'я.');
-            return;
-        }
-
-        // Зберігаємо об'єкт з паролем та початковими очками (0)
-        users[username] = {
-            password: password,
-            score: 0
-        };
-
-        localStorage.setItem('gameUsersData', JSON.stringify(users));
-        localStorage.setItem('currentUser', username);
-        
-        // Також оновлюємо старий список лідерборду для сумісності
-        let legacyUsers = JSON.parse(localStorage.getItem('gameUsers')) || {};
-        legacyUsers[username] = 0;
-        localStorage.setItem('gameUsers', JSON.stringify(legacyUsers));
-
-        alert('Успішна реєстрація!');
-        window.location.href = 'index.html';
-    });
-</script>
+    <main class="settings-container">
+        <h1>📝 Реєстрація</h1>
+        <form id="registerForm" class="settings-card">
+            <input type="text" id="regUser" placeholder="Введіть логін" required style="padding: 10px; width: 80%; border-radius: 6px; border: 1px solid #ccc;">
+            <input type="password" id="regPass" placeholder="Введіть пароль" required style="padding: 10px; width: 80%; border-radius: 6px; border: 1px solid #ccc;">
+            <button type="submit" id="submitReg" style="padding: 12px 24px; background: cyan; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Зареєструватися</button>
+        </form>
+    </main>
 </body>
 </html>
