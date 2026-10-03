@@ -89,3 +89,34 @@ if (toggleButton) {
         }
     });
 }
+
+async function updateCloudScore(username, newScore) {
+    const BIN_ID = '6ac0c050ac6210605a0ee2a3';
+    const API_KEY = '$2a$10$.4uggn6AMRp8c0UYkvUTM.OhfSsg0iRZckZJ9CeiJLH57c7eNyKnu';
+
+    try {
+        // 1. Спочатку завантажуємо поточну хмарну базу
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+            headers: { 'X-Master-Key': API_KEY }
+        });
+        const getData = await getRes.json();
+        let players = getData.record.players || {};
+
+        // 2. Оновлюємо або додаємо гравця (зберігаємо максимальний результат)
+        if (!players[username] || newScore > players[username]) {
+            players[username] = newScore;
+
+            // 3. Відправляємо оновлений об'єкт назад у хмару
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': API_KEY
+                },
+                body: JSON.stringify({ players: players })
+            });
+        }
+    } catch (e) {
+        console.error("Не вдалося оновити результат у хмарі", e);
+    }
+}
