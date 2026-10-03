@@ -8,20 +8,90 @@
     </script>
     <meta charset="UTF-8">
     <title>Реєстрація - ClickSword</title>
-    <link rel="stylesheet" href="style1.css"> <!-- або стиль твоїх форм -->
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        /* Стиль для красивого спливаючого сповіщення */
+        .toast {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00838f;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: bottom 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        body.dark-theme .toast {
+            background: #ff79c6;
+            color: #121212;
+        }
+        .toast.show {
+            bottom: 30px; 
+        }
+    </style>
 </head>
 <body>
     <header>
         <a href="index.html" class="home-btn">🏠</a>
     </header>
 
+    <div id="toast" class="toast">Повідомлення</div>
+
     <main class="settings-container">
         <h1>📝 Реєстрація</h1>
         <form id="registerForm" class="settings-card">
-            <input type="text" id="regUser" placeholder="Введіть логін" required style="padding: 10px; width: 80%; border-radius: 6px; border: 1px solid #ccc;">
-            <input type="password" id="regPass" placeholder="Введіть пароль" required style="padding: 10px; width: 80%; border-radius: 6px; border: 1px solid #ccc;">
-            <button type="submit" id="submitReg" style="padding: 12px 24px; background: cyan; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Зареєструватися</button>
+            <input type="text" id="regUser" placeholder="Введіть логін" required style="padding: 12px; width: 85%; border-radius: 8px; border: 2px solid #ccc; font-size: 16px;">
+            <input type="password" id="regPass" placeholder="Введіть пароль" required style="padding: 12px; width: 85%; border-radius: 8px; border: 2px solid #ccc; font-size: 16px;">
+            <button type="submit" id="submitReg" style="padding: 12px 24px; background: cyan; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; width: 90%;">Зареєструватися</button>
         </form>
     </main>
+
+<script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1500);
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('regUser').value.trim();
+        const password = document.getElementById('regPass').value.trim();
+
+        if (!username || !password) {
+            showToast('❌ Заповніть всі поля!');
+            return;
+        }
+
+        let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
+
+        if (usersData[username]) {
+            showToast('❌ Такий користувач вже є!');
+            return;
+        }
+
+        usersData[username] = { password: password, score: 0 };
+        localStorage.setItem('gameUsersData', JSON.stringify(usersData));
+
+        localStorage.setItem('userCounter_' + username, 0);
+        localStorage.setItem('totalClicks_' + username, 0);
+        localStorage.setItem('clickPower_' + username, 1);
+        localStorage.setItem('currentUser', username);
+        
+        showToast('✨ Реєстрація успішна!');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
+    });
+</script>
 </body>
 </html>
