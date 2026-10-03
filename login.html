@@ -1,48 +1,28 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script>
+        // Застосовуємо тему одразу при завантаженні, щоб уникнути білого спалаху
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
     <meta charset="UTF-8">
-    <title>Вхід в аккаунт</title>
+    <title>Вхід - ClickSword</title>
     <link rel="stylesheet" href="style1.css">
-    <style>
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
-        .form-box { display: flex; flex-direction: column; gap: 15px; width: 300px; }
-        input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
-        button { padding: 10px; font-size: 16px; background-color: cyan; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        a { text-decoration: none; color: #000; margin-top: 10px; text-align: center; }
-    </style>
 </head>
 <body>
-    <h2>Вхід в аккаунт</h2>
-    <div class="form-box">
-        <input type="text" id="loginUser" placeholder="Ім'я користувача">
-        <input type="password" id="loginPass" placeholder="Пароль">
-        <button id="loginBtn">Увійти</button>
-        <a href="index.html">← На головну</a>
-    </div>
+    <header>
+        <a href="index.html" class="home-btn">🏠</a>
+    </header>
 
-<script>
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        let username = document.getElementById('loginUser').value.trim();
-        let password = document.getElementById('loginPass').value.trim();
-
-        let users = JSON.parse(localStorage.getItem('gameUsersData')) || {};
-
-        if (users[username] === undefined) {
-            alert('Такого користувача не знайдено!');
-            return;
-        }
-
-        // Перевіряємо пароль
-        if (users[username].password !== password) {
-            alert('Невірний пароль!');
-            return;
-        }
-
-        localStorage.setItem('currentUser', username);
-        alert('Успішний вхід!');
-        window.location.href = 'index.html';
-    });
-</script>
+    <main class="settings-container">
+        <h1>🔑 Вхід в акаунт</h1>
+        <form id="loginForm" class="settings-card">
+            <input type="text" id="loginUser" placeholder="Введіть логін" required style="padding: 12px; width: 85%; border-radius: 8px; border: 2px solid #ccc; font-size: 16px;">
+            <input type="password" id="loginPass" placeholder="Введіть пароль" required style="padding: 12px; width: 85%; border-radius: 8px; border: 2px solid #ccc; font-size: 16px;">
+            <button type="submit" id="submitLogin" style="padding: 12px 24px; background: cyan; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; width: 90%;">Увійти</button>
+        </form>
+    </main>
 </body>
 </html>
