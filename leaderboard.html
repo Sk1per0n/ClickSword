@@ -102,7 +102,7 @@
                     <tr>
                         <th>Місце</th>
                         <th>Гравець</th>
-                        <th>Рахунок</th>
+                        <th>Загальний рахунок</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
@@ -123,7 +123,7 @@
     async function syncAndLoadLeaderboard() {
         const tbody = document.getElementById('leaderboardBody');
         try {
-            // 1. Отримуємо поточні дані з хмари
+            // 1. Отримуємо актуальні дані з хмари
             const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                 headers: { 'X-Master-Key': API_KEY }
             });
@@ -132,25 +132,37 @@
 
             let updated = false;
 
-            // 2. Збираємо локальні дані гравців цього комп'ютера і додаємо в хмару
+            // 2. Збираємо дані з локальної бази користувачів (gameUsersData)
             let localUsersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
             Object.keys(localUsersData).forEach(username => {
-                let score = 0;
-                let specificCounter = localStorage.getItem('userCounter_' + username);
-                if (specificCounter !== null) {
-                    score = parseInt(specificCounter, 10);
-                } else if (localUsersData[username].score !== undefined) {
-                    score = localUsersData[username].score;
+                let userObj = localUsersData[username];
+                
+                // Витягуємо збережений загальний рахунок (score або points з бази)
+                let totalScore = 0;
+                if (typeof userObj === 'object' && userObj !== null) {
+                    totalScore = userObj.score !== undefined ? userObj.score : (userObj.points || 0);
+                } else if (typeof userObj === 'number') {
+                    totalScore = userObj;
                 }
 
-                // Якщо гравця немає в хмарі або локальний рахунок більший — оновлюємо
-                if (playersObj[username] === undefined || score > playersObj[username]) {
-                    playersObj[username] = score;
+                // Також перевіряємо, чи немає окремого ключа загальних кліків
+                let totalClicksKey = localStorage.getItem('totalClicks_' + username);
+                if (totalClicksKey !== null) {
+                    let parsedTotal = parseInt(totalClicksKey, 10);
+                    if (parsedTotal > totalScore) totalScore = parsedTotal;
+                }
+
+                // Порівнюємо з тим, що вже є в хмарі для цього гравця
+                let currentCloudScore = playersObj[username] || 0;
+
+                // Записуємо в хмару тільки якщо локальний загальний рахунок БІЛЬШИЙ
+                if (totalScore > currentCloudScore) {
+                    playersObj[username] = totalScore;
                     updated = true;
                 }
             });
 
-            // 3. Якщо з'явилися нові дані, відправляємо оновлений список назад у хмару
+            // 3. Якщо знайшли більші рекорди, оновлюємо хмару на сервері
             if (updated) {
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
@@ -162,12 +174,13 @@
                 });
             }
 
-            // 4. Формуємо масив для відображення
+            // 4. Формуємо масив для виведення в таблицю
             let usersArray = Object.keys(playersObj).map(username => ({
                 username: username,
                 score: playersObj[username]
             }));
 
+            // Сортуємо від найбільшого до найменшого
             usersArray.sort((a, b) => b.score - a.score);
 
             if (usersArray.length === 0) {
