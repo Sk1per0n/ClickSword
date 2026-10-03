@@ -68,7 +68,7 @@ body.dark-theme .balance-card {
     font-size: 22px;
 }
 
-/* Сітка магазину (красиве розташування карток) */
+/* Сітка магазину */
 .shop-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -129,6 +129,32 @@ body.dark-theme .upgrade-title {
 
 body.dark-theme .upgrade-count {
     color: #aaa;
+}
+
+/* Стиль для спливаючого сповіщення (тоста) */
+.toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00838f;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: bottom 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+body.dark-theme .toast {
+    background: #ff79c6;
+    color: #121212;
+}
+
+.toast.show {
+    bottom: 30px; 
 }
 
 .subtitle {
