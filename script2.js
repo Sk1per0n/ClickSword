@@ -74,14 +74,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    setupUpgrade('up1', 100, 1);
-    setupUpgrade('up2', 250, 2);
-    setupUpgrade('up3', 500, 5);
-    setupUpgrade('up4', 1500, 10);
-    setupUpgrade('up5', 2000, 15);
-    setupUpgrade('up6', 3000, 20);
-    setupUpgrade('up7', 50000, 50);
-    setupUpgrade('up8', 150000, 100);
+    setupUpgrade('up1', 50, 1);
+    setupUpgrade('up2', 150, 2);
+    setupUpgrade('up3', 400, 5);
+    setupUpgrade('up4', 1000, 10);
+    setupUpgrade('up5', 2500, 20);
+    setupUpgrade('up6', 5000, 35);
+    setupUpgrade('up7', 9000, 50);   
+    setupUpgrade('up8', 15000, 75);  
 });
 
 // Автоматичне застосування темної теми в магазині
