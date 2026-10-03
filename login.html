@@ -2,7 +2,11 @@
 <html lang="uk">
 <head>
     <script>
-        if (localStorage.getItem('theme') === 'dark') {
+        // Перевіряємо різні можливі ключі темної теми в localStorage
+        const isDark = localStorage.getItem('theme') === 'dark' || 
+                       localStorage.getItem('darkTheme') === 'true' || 
+                       localStorage.getItem('isDark') === 'true';
+        if (isDark) {
             document.documentElement.classList.add('dark-theme');
         }
     </script>
@@ -123,7 +127,7 @@
     </main>
 
 <script>
-    if (localStorage.getItem('theme') === 'dark') {
+    if (isDark) {
         document.body.classList.add('dark-theme');
     }
 
@@ -139,7 +143,8 @@
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const username = document.getElementById('loginUser'].value.trim();
+        // Виправлено помилку з дужкою нижче:
+        const username = document.getElementById('loginUser').value.trim();
         const password = document.getElementById('loginPass').value.trim();
 
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
