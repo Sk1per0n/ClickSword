@@ -109,9 +109,10 @@ body.dark-theme .greeting-text {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
+/* Виправлення білого фону кнопки в темній темі */
 body.dark-theme .clicker-btn {
     border-color: #ff79c6;
-    background-color: #1e1e1e;
+    background-color: transparent !important;
 }
 
 /* Навігаційні посилання внизу */
