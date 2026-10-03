@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <!-- Миттєве застосування темної теми до завантаження сторінки, щоб не було миготіння -->
     <script>
-        if (localStorage.getItem('theme') === 'dark') {
+        const isDark = localStorage.getItem('theme') === 'dark' || 
+                       localStorage.getItem('darkTheme') === 'true' || 
+                       localStorage.getItem('isDark') === 'true';
+        if (isDark) {
             document.documentElement.classList.add('dark-theme');
         }
     </script>
@@ -99,27 +101,22 @@
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
-                    <!-- Дані заповнюватимуться автоматично через JavaScript -->
+                    <!-- Заповнюється автоматично -->
                 </tbody>
             </table>
         </div>
     </main>
 
 <script>
-    // Додатково ставимо клас на body на випадок стилів
-    if (localStorage.getItem('theme') === 'dark') {
+    if (isDark) {
         document.body.classList.add('dark-theme');
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         const tbody = document.getElementById('leaderboardBody');
-        
-        // Отримуємо збережені дані користувачів з гри
         let usersData = JSON.parse(localStorage.getItem('gameUsersData')) || {};
         
-        // Перетворюємо об'єкт у масив для сортування [ [username, data], ... ]
         let usersArray = Object.keys(usersData).map(username => {
-            // Збираємо актуальний рахунок для гравця (перевіряємо і загальний об'єкт, і окремий лічильник якщо є)
             let score = usersData[username].score || 0;
             let specificCounter = localStorage.getItem('userCounter_' + username);
             if (specificCounter !== null) {
@@ -128,16 +125,13 @@
             return { username: username, score: score };
         });
 
-        // Сортуємо за спаданням рахунку (найбільші бали зверху)
         usersArray.sort((a, b) => b.score - a.score);
 
-        // Якщо база порожня
         if (usersArray.length === 0) {
             tbody.innerHTML = `<tr><td colspan="3" class="no-data">Ще немає зареєстрованих гравців!</td></tr>`;
             return;
         }
 
-        // Заповнюємо таблицю лідерами
         tbody.innerHTML = '';
         usersArray.forEach((user, index) => {
             let medal = '';
