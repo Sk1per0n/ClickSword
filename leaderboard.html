@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
     <meta charset="UTF-8">
-    <title>Лідерборд</title>
-    <link rel="stylesheet" href="style2.css">
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .leaderboard-list { width: 50%; margin: 30px auto; display: flex; flex-direction: column; gap: 10px; }
-        .leader-item { display: flex; justify-content: space-between; padding: 15px 20px; background: #f0f0f0; border-radius: 8px; font-size: 20px; font-weight: bold; }
-        body.dark-theme .leader-item { background: #1e1e1e; color: #fff; }
-    </style>
+    <title>Лідерборд - ClickSword</title>
+    <link rel="stylesheet" href="style3.css">
 </head>
 <body>
     <header>
-        <a href="index.html">Home</a>
+        <a href="index.html" class="home-btn">🏠</a>
     </header>
 
-    <main>
+    <main class="shop-container">
         <h1>🏆 Таблиця лідерів</h1>
+        <p class="subtitle">Найкращі гравці за загальною кількістю кліків</p>
+        
         <div class="leaderboard-list" id="leaderboardContainer">
             <!-- Тут будуть з'являтися гравці -->
         </div>
@@ -41,18 +42,27 @@
             sortedUsers = Object.entries(legacyUsers);
         }
 
-        // Сортуємо від найбільшої кількості до найменшої
         sortedUsers.sort((a, b) => b[1] - a[1]);
 
         if (sortedUsers.length === 0) {
-            container.innerHTML = '<p>Поки що немає зареєстрованих гравців.</p>';
+            container.innerHTML = '<p class="empty-text">Поки що немає зареєстрованих гравців.</p>';
             return;
         }
 
         sortedUsers.forEach(([username, score], index) => {
             const item = document.createElement('div');
             item.className = 'leader-item';
-            item.innerHTML = `<span>#${index + 1} ${username}</span> <span>${score} Click</span>`;
+            
+            // Додаємо особливі іконки для топ-3 гравців
+            let medal = `#${index + 1}`;
+            if (index === 0) medal = '🥇';
+            if (index === 1) medal = '🥈';
+            if (index === 2) medal = '🥉';
+
+            item.innerHTML = `
+                <div class="leader-user"><span class="medal">${medal}</span> ${username}</div> 
+                <div class="leader-score">${score} клік</div>
+            `;
             container.appendChild(item);
         });
     });
